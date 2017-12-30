@@ -73,5 +73,5 @@ dependencies {
     //上下方向拖拽布局
     compile 'com.balysv:material-ripple:1.0.2'
     //水波加载
-    compile 'com.yanzhenjie:permission:1.1.2'
+//    compile 'com.yanzhenjie:permission:1.1.2'
 }
