@@ -2,11 +2,8 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
-            <solid android:color="@color/half_transparent" />
+            <solid android:color="@color/gray" />
 
-            <stroke
-                android:width="0.5dp"
-                android:color="@color/half_transparent" />
             <corners android:radius="45dip" />
         </shape>
     </item>

@@ -5,7 +5,6 @@ import android.util.Log;
 
 import static com.base.library.manufacturerUtil.Manufacturer.other;
 
-
 /**
  * 作者：王东一
  * 创建时间：2017/9/12.

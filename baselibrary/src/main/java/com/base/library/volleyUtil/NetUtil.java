@@ -76,4 +76,25 @@ public class NetUtil {
         }
         return name;
     }
+    //判断网络连接是否可用
+    public static boolean isNetworkAvailable(Context context) {
+        try {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivityManager == null) {
+            } else {
+                NetworkInfo[] networkInfo = connectivityManager.getAllNetworkInfo();
+                if (networkInfo != null && networkInfo.length > 0) {
+                    for (int i = 0; i < networkInfo.length; i++) {
+                        if (networkInfo[i].getState() == NetworkInfo.State.CONNECTED) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+
+        }
+        return false;
+    }
+
 }

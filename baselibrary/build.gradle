@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 group = 'com.github.wangdongyi'
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    buildToolsVersion "26.0.3"
 
     defaultConfig {
         minSdkVersion 15
@@ -51,7 +51,7 @@ dependencies {
     compile 'com.android.support:cardview-v7:26.1.0'
     compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'com.android.support:palette-v7:26.1.0'
-    implementation 'com.android.support:multidex:1.0.2'
+    compile 'com.android.support:multidex:1.0.2'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.belerweb:pinyin4j:2.5.1'
@@ -73,5 +73,6 @@ dependencies {
     //上下方向拖拽布局
     compile 'com.balysv:material-ripple:1.0.2'
     //水波加载
-//    compile 'com.yanzhenjie:permission:1.1.2'
+    compile 'com.yanzhenjie:permission:1.1.2'
+    compile 'com.github.wangdongyi:wdyTime:0.0.3'
 }

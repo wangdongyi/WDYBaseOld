@@ -213,11 +213,6 @@ public class PhotoPickerActivity extends WDYBaseActivity implements PhotoAdapter
                 }
                 selectPhoto(mPhotoLists.get(position));
             }
-
-            @Override
-            public void onDelete(int position) {
-
-            }
         });
     }
 
@@ -286,11 +281,6 @@ public class PhotoPickerActivity extends WDYBaseActivity implements PhotoAdapter
                     mPhotoNumTV.setText(PhotoUtils.formatResourceString(getApplicationContext(), R.string.picker_photos_num, mPhotoLists.size()));
                     mPhotoNameTV.setText(folder.getName());
                     toggle();
-                }
-
-                @Override
-                public void onDelete(int position) {
-
                 }
             });
             dimLayout.setOnTouchListener(new View.OnTouchListener() {

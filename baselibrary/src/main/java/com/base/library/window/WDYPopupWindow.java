@@ -17,7 +17,7 @@ public class WDYPopupWindow extends PopupWindow {
 
     @Override
     public void showAsDropDown(View anchor) {
-        if (Build.VERSION.SDK_INT == 24) {
+        if (Build.VERSION.SDK_INT >= 24) {
             Rect rect = new Rect();
             anchor.getGlobalVisibleRect(rect);
             int h = anchor.getResources().getDisplayMetrics().heightPixels - rect.bottom;
@@ -28,7 +28,7 @@ public class WDYPopupWindow extends PopupWindow {
 
     @Override
     public void showAsDropDown(View anchor, int x, int y) {
-        if(Build.VERSION.SDK_INT == 24) {
+        if(Build.VERSION.SDK_INT >= 24) {
             Rect rect = new Rect();
             anchor.getGlobalVisibleRect(rect);
             int h = anchor.getResources().getDisplayMetrics().heightPixels - rect.bottom;

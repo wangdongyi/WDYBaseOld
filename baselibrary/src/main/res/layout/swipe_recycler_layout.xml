@@ -16,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/load"
-            android:background="@color/white"
             android:divider="@color/line"
             android:dividerHeight="0.5dp"
             android:scrollbars="none" />
@@ -36,7 +35,7 @@
             <com.base.library.view.loading.LoadingView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:loadingColor="#ffffff" />
+                app:loadingColor="@color/blue" />
         </LinearLayout>
     </RelativeLayout>
 </com.base.library.view.refresh.RefreshLayout>

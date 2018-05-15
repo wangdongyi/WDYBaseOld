@@ -64,6 +64,15 @@
                 android:layout_width="60dp"
                 android:layout_height="180dp" />
 
+            <com.base.library.view.pickerView.PickerView
+                android:id="@+id/pickerView_hour"
+                android:layout_width="60dp"
+                android:layout_height="180dp" />
+
+            <com.base.library.view.pickerView.PickerView
+                android:id="@+id/pickerView_minute"
+                android:layout_width="60dp"
+                android:layout_height="180dp" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
