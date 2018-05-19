@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">MyLibrary</string>
     <string name="back">返回</string>
-    <string name="refresh_head_load_more">加载更多</string>
     <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
     <string name="tips_not_wifi">您当前正在使用移动网络，继续播放将消耗流量</string>
     <string name="tips_not_wifi_confirm">继续播放</string>

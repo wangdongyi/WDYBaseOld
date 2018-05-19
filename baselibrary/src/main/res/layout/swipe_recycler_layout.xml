@@ -4,10 +4,11 @@
     android:id="@+id/refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_gray"
+    android:background="@color/transparent"
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/wdy_recyclerView_parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

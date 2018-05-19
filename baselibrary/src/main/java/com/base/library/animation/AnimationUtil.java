@@ -98,9 +98,9 @@ public class AnimationUtil {
         PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("alpha", 1f,
                 0f, 1f);
         PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleX", 1f,
-                1.3f, 1f);
+                1.5f, 1f);
         PropertyValuesHolder pvhZ = PropertyValuesHolder.ofFloat("scaleY", 1f,
-                1.3f, 1f);
+                1.5f, 1f);
         ObjectAnimator.ofPropertyValuesHolder(view, pvhX, pvhY, pvhZ).setDuration(AnimatorDelay).start();
     }
 

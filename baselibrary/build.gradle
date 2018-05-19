@@ -38,11 +38,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
     implementation files('libs/zxing.jar')
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.android.support:support-v4:27.1.1'
@@ -75,4 +75,6 @@ dependencies {
     //水波加载
     implementation 'com.yanzhenjie:permission:1.1.2'
     implementation 'com.github.wangdongyi:wdyTime:0.0.3'
+    implementation 'com.gyf.barlibrary:barlibrary:2.3.0'
+    implementation 'com.github.BolexLiu:AutoEx:v1.0.6'
 }

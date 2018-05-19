@@ -1,13 +1,17 @@
 package com.base.library.view.pieChart;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.base.library.R;
 
@@ -20,9 +24,10 @@ public class PieChartView extends View {
     private Paint titlePaint;// 绘制文本的画笔
     private Paint paint;// 矩形画笔 柱状图的样式信息
     private ArrayList<PieChartItem> arrayList;
-    private int width;
-    private int height;
-    private String textName = "分类";
+    private float width;
+    private float height;
+    private String textName = "";
+    private int ChartWidth;
 
     public String getTextName() {
         return textName;
@@ -47,17 +52,19 @@ public class PieChartView extends View {
 
     public PieChartView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initAttributes(context, attrs);
         init();
     }
 
     public PieChartView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        initAttributes(context, attrs);
         init();
     }
 
     private void init() {
-        arrayList = new ArrayList<>();
 
+        arrayList = new ArrayList<>();
         titlePaint = new Paint();
         paint = new Paint();
         // 给画笔设置颜色
@@ -66,6 +73,22 @@ public class PieChartView extends View {
         titlePaint.setAntiAlias(true);
         titlePaint.setStyle(Paint.Style.FILL);
         titlePaint.setTextAlign(Paint.Align.CENTER);
+    }
+
+    protected TypedArray getTypedArray(Context context, AttributeSet attributeSet, int[] attr) {
+        return context.obtainStyledAttributes(attributeSet, attr, 0, 0);
+    }
+
+    private void initAttributes(Context context, AttributeSet attributeSet) {
+        TypedArray attr = getTypedArray(context, attributeSet, R.styleable.PieChartSexView);
+        if (attr == null) {
+            return;
+        }
+        try {
+            ChartWidth = (int) attr.getDimension(R.styleable.PieChartSexView_ChartWidth, (width - dp2px(10)) / 5);
+        } finally {
+            attr.recycle();
+        }
     }
 
     private int dp2px(int value) {
@@ -84,69 +107,48 @@ public class PieChartView extends View {
         width = getWidth();
         height = getHeight();
         paint.setAntiAlias(true);// 设置画笔的锯齿效果。 true是去除，大家一看效果就明白了
-        RectF rect = new RectF(0, 0, width, height);
+        RectF rect = new RectF(0f, 0f, width, height);
         if (arrayList.size() > 0) {
             for (int i = 0; i < arrayList.size(); i++) {
                 changeColor(arrayList.get(i).getColor());
                 canvas.drawArc(rect, //弧线所使用的矩形区域大小
-                        arrayList.get(i).getStarAngle() + 1,  //开始角度
-                        arrayList.get(i).getPercentage() - 1, //扫过的角度
+                        arrayList.get(i).getStarAngle() - 1,  //开始角度
+                        arrayList.get(i).getPercentage() + 1, //扫过的角度
                         true, //是否使用中心
                         paint);
             }
         } else {
             paint.setColor(Color.rgb(158, 158, 174));
             canvas.drawArc(rect, //弧线所使用的矩形区域大小
-                   -90,  //开始角度
+                    -90,  //开始角度
                     360, //扫过的角度
                     true, //是否使用中心
                     paint);
         }
         paint.setColor(Color.WHITE);
-        canvas.drawCircle(width / 2, height / 2, (width - dp2px(10)) * 2 / 5, paint);// 大圆
+        canvas.drawCircle(width / 2, height / 2, ChartWidth, paint);// 大圆
         canvas.drawText(getTextName(), width / 2, height / 2 + dp2px(5), titlePaint);
+
 
     }
 
+    private void initAnimator() {
+        ValueAnimator anim = ValueAnimator.ofFloat(0, 360);
+        anim.setDuration(10000);
+        anim.setInterpolator(new AccelerateDecelerateInterpolator());
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+//                animatedValue = (float) valueAnimator.getAnimatedValue();
+                invalidate();
+            }
+        });
+        anim.start();
+    }
+
     //获取颜色
-    private void changeColor(int position) {
-        switch (position) {
-            case 0:
-                paint.setColor(Color.rgb(140, 197, 64));
-                break;
-            case 1:
-                paint.setColor(Color.rgb(0, 159, 93));
-                break;
-            case 2:
-                paint.setColor(Color.rgb(1, 159, 160));
-                break;
-            case 3:
-                paint.setColor(Color.rgb(1, 159, 222));
-                break;
-            case 4:
-                paint.setColor(Color.rgb(0, 124, 220));
-                break;
-            case 5:
-                paint.setColor(Color.rgb(136, 125, 221));
-                break;
-            case 6:
-                paint.setColor(Color.rgb(205, 123, 221));
-                break;
-            case 7:
-                paint.setColor(Color.rgb(255, 86, 117));
-                break;
-            case 8:
-                paint.setColor(Color.rgb(255, 18, 68));
-                break;
-            case 9:
-                paint.setColor(Color.rgb(255, 131, 69));
-                break;
-            case 10:
-                paint.setColor(Color.rgb(248, 189, 11));
-                break;
-            case 11:
-                paint.setColor(Color.rgb(209, 210, 212));
-                break;
-        }
+    private void changeColor(String color) {
+        paint.setColor(Color.parseColor((TextUtils.isEmpty(color) ? "#ffffff" : color)));
     }
 }

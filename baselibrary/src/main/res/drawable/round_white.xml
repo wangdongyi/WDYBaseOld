@@ -12,16 +12,16 @@
     </item-->
 
     <item
-        android:left="2dp"
-        android:top="2dp"
-        android:right="2dp"
-        android:bottom="2dp">
-        <shape android:shape="rectangle" >
+        android:bottom="1dp"
+        android:left="1dp"
+        android:right="1dp"
+        android:top="1dp">
+        <shape android:shape="rectangle">
 
             <gradient
                 android:angle="270"
-                android:endColor="#0F000000"
-                android:startColor="#0F000000" />
+                android:endColor="#10000000"
+                android:startColor="#08000000" />
 
             <corners
                 android:bottomLeftRadius="6dip"
@@ -34,11 +34,11 @@
     <!-- 背景部分 -->
     <!-- 形象的表达：bottom代表背景部分在上边缘超出阴影的高度，right代表背景部分在左边超出阴影的宽度（相对应的offset） -->
     <item
-        android:left="3dp"
-        android:top="3dp"
-        android:right="3dp"
-        android:bottom="5dp">
-        <shape android:shape="rectangle" >
+        android:bottom="3.5dp"
+        android:left="1dp"
+        android:right="1dp"
+        android:top="1dp">
+        <shape android:shape="rectangle">
 
             <gradient
                 android:angle="270"
@@ -50,6 +50,10 @@
                 android:bottomRightRadius="6dip"
                 android:topLeftRadius="6dip"
                 android:topRightRadius="6dip" />
+
+            <stroke
+                android:width="0.5dp"
+                android:color="@color/line" />
         </shape>
     </item>
 </layer-list>

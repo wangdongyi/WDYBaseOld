@@ -23,19 +23,40 @@ public class DialogUtil {
     private static Dialog dialog = null;
 
     public static void show(Context mContext) {
-        dialog = new Dialog(mContext, R.style.DialogStyle);
-        View view = LayoutInflater.from(mContext).inflate(R.layout.loading_layout, null);
-        dialog.setContentView(view);
-        dialog.setCancelable(true);
-        Window win = dialog.getWindow();
-        win.getDecorView().setPadding(0, 0, 0, 0);
-        WindowManager.LayoutParams params = win.getAttributes();
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.MATCH_PARENT;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
-        params.y = CodeUtil.getScreenHeight(mContext);
-        win.setAttributes(params);
-        dialog.show();
+        if (dialog == null) {
+            dialog = new Dialog(mContext, R.style.DialogStyle);
+            View view = LayoutInflater.from(mContext).inflate(R.layout.loading_layout, null);
+            dialog.setContentView(view);
+            dialog.setCancelable(true);
+            Window win = dialog.getWindow();
+            win.getDecorView().setPadding(0, 0, 0, 0);
+            WindowManager.LayoutParams params = win.getAttributes();
+            params.width = WindowManager.LayoutParams.MATCH_PARENT;
+            params.height = WindowManager.LayoutParams.MATCH_PARENT;
+            dialog.getWindow().setGravity(Gravity.BOTTOM);
+            params.y = CodeUtil.getScreenHeight(mContext);
+            win.setAttributes(params);
+            dialog.show();
+        }
+
+    }
+
+    public static void show(Context mContext, boolean cancel) {
+        if (dialog == null) {
+            dialog = new Dialog(mContext, R.style.DialogStyle);
+            View view = LayoutInflater.from(mContext).inflate(R.layout.loading_layout, null);
+            dialog.setContentView(view);
+            dialog.setCancelable(cancel);
+            Window win = dialog.getWindow();
+            win.getDecorView().setPadding(0, 0, 0, 0);
+            WindowManager.LayoutParams params = win.getAttributes();
+            params.width = WindowManager.LayoutParams.MATCH_PARENT;
+            params.height = WindowManager.LayoutParams.MATCH_PARENT;
+            dialog.getWindow().setGravity(Gravity.BOTTOM);
+            params.y = CodeUtil.getScreenHeight(mContext);
+            win.setAttributes(params);
+            dialog.show();
+        }
     }
 
     public static void showNoTitle(Context mContext, String content, String left, String right, View.OnClickListener leftListener, View.OnClickListener rightListener) {
@@ -89,6 +110,7 @@ public class DialogUtil {
         textViewRight.setOnClickListener(rightListener);
         dialog.show();
     }
+
     public static void showSingeButton(Context mContext, String subtitle, String content, String button, View.OnClickListener Listener) {
         dialog = new Dialog(mContext, R.style.DialogStyle);
         View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_title_singe_button, null);
@@ -103,6 +125,7 @@ public class DialogUtil {
         textView.setOnClickListener(Listener);
         dialog.show();
     }
+
     public static void showNoTitleSingeButton(Context mContext, String content, String subtitle, String button, View.OnClickListener Listener) {
         dialog = new Dialog(mContext, R.style.DialogStyle);
         View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_singe_button, null);
@@ -154,7 +177,8 @@ public class DialogUtil {
         textViewRight.setOnClickListener(rightListener);
         dialog.show();
     }
-    public static void show(Context mContext, String title, String content,String left,String right, View.OnClickListener leftListener, View.OnClickListener rightListener) {
+
+    public static void show(Context mContext, String title, String content, String left, String right, View.OnClickListener leftListener, View.OnClickListener rightListener) {
         dialog = new Dialog(mContext, R.style.DialogStyle);
         View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_layout, null);
         dialog.setContentView(view);
@@ -169,6 +193,7 @@ public class DialogUtil {
         textViewRight.setOnClickListener(rightListener);
         dialog.show();
     }
+
     public static void showDeleteDialog(Context mContext, View.OnClickListener listener) {
         @SuppressLint("InflateParams")
         RelativeLayout layout = (RelativeLayout) LayoutInflater.from(mContext).inflate(R.layout.delete_dialog_layout, null);
@@ -316,6 +341,7 @@ public class DialogUtil {
     public static void dismiss() {
         if (null != dialog) {
             dialog.dismiss();
+            dialog = null;
         }
     }
 

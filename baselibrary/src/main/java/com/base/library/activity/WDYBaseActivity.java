@@ -1,23 +1,35 @@
 package com.base.library.activity;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.base.library.R;
 import com.base.library.application.BaseApplication;
-import com.base.library.immersion.ImmersionBar;
 import com.base.library.listen.OnKeyboardListener;
 import com.base.library.util.ActivityManage;
 import com.base.library.util.ActivityTransition;
@@ -28,8 +40,12 @@ import com.base.library.util.MethodInvoke;
 import com.base.library.util.SDKVersionUtils;
 import com.base.library.util.StatusBarUtil;
 import com.base.library.util.SupportSwipeModeUtils;
+import com.base.library.util.ToastUtil;
 import com.base.library.view.swipeBackLayout.SwipeBackHelper;
 import com.base.library.view.swipeBackLayout.SwipeBackLayout;
+import com.gyf.barlibrary.ImmersionBar;
+
+import java.lang.reflect.Method;
 
 /**
  * 作者：王东一 on 2016/3/21 16:54
@@ -45,6 +61,7 @@ public class WDYBaseActivity extends AppCompatActivity implements SwipeBackHelpe
     protected Boolean isShowKeyboard = false;
     //子view
     public View mBaseLayoutView;
+    private BaseHandler handler;
 
     public OnKeyboardListener getOnKeyboardListener() {
         return onKeyboardListener;
@@ -58,6 +75,9 @@ public class WDYBaseActivity extends AppCompatActivity implements SwipeBackHelpe
     private OnKeyboardListener onKeyboardListener;
     private boolean isViewBuild = false;
     private boolean openExit = false;
+    private boolean dark = false;
+    protected ToastUtil toastUtil;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +85,9 @@ public class WDYBaseActivity extends AppCompatActivity implements SwipeBackHelpe
         super.onCreate(savedInstanceState);
         ActivityManage.getInstance().addActivity(this);
         //设置状态栏文字颜色
-        StatusBarUtil.setStatusBarDark(this, BaseApplication.getThemBean().isStatusBarDark());
+        StatusBarUtil.setStatusBarDark(getWindow(), BaseApplication.getThemBean().isStatusBarDark());
         initSystemBar();
+//        hideBottomUIMenu();
     }
 
     @Override
@@ -142,7 +163,17 @@ public class WDYBaseActivity extends AppCompatActivity implements SwipeBackHelpe
 
     //过场动画加载完成在处理耗时逻辑
     protected void onAnimationComplete() {
+        getToastUtil();
+    }
 
+    public ToastUtil getToastUtil() {
+        if (toastUtil == null) {
+            synchronized (ToastUtil.class) {
+                if (toastUtil == null)
+                    toastUtil = new ToastUtil(WDYBaseActivity.this);
+            }
+        }
+        return toastUtil;
     }
 
     private void initView() {
@@ -165,7 +196,7 @@ public class WDYBaseActivity extends AppCompatActivity implements SwipeBackHelpe
                 }
             }
         });
-
+        handler = new BaseHandler();
     }
 
 
@@ -179,13 +210,23 @@ public class WDYBaseActivity extends AppCompatActivity implements SwipeBackHelpe
     private void initSystemBar() {
         ImmersionBar.with(this)
                 .transparentStatusBar()  //透明状态栏，不写默认透明色
+                .navigationBarEnable(true)
+                .navigationBarColor(R.color.white)
                 .init();
+    }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            StatusBarUtil.setStatusBarDark(getWindow(), dark);
+        }
     }
 
     //设置主题是不是深色的
     public void setStatusBar(boolean dark) {
-        StatusBarUtil.setStatusBarDark(this, dark);
+        this.dark = dark;
+        StatusBarUtil.setStatusBarDark(getWindow(), dark);
     }
 
 
@@ -200,7 +241,6 @@ public class WDYBaseActivity extends AppCompatActivity implements SwipeBackHelpe
         }
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -211,6 +251,9 @@ public class WDYBaseActivity extends AppCompatActivity implements SwipeBackHelpe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
         ActivityManage.getInstance().removeActivity(this);
         ImmersionBar.with(this).destroy();  //不调用该方法，如果界面bar发生改变，在不关闭app的情况下，退出此界面再
     }
@@ -361,6 +404,49 @@ public class WDYBaseActivity extends AppCompatActivity implements SwipeBackHelpe
                 activityCloseExitAnimation = R.anim.slide_right_out;
             }
         }
+    }
+
+    private class BaseHandler extends Handler {
+        @Override
+        public void dispatchMessage(Message msg) {
+            super.dispatchMessage(msg);
+            switch (msg.what) {
+                case 1001:
+                    getToastUtil().showMiddleToast(String.valueOf(msg.obj));
+                    break;
+            }
+        }
+    }
+
+    protected void showMiddleToast(final String msg) {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Message message = new Message();
+                message.what = 1001;
+                message.obj = msg;
+                handler.sendMessage(message);
+            }
+        }, 500);
+    }
+
+    /**
+     * get App versionCode
+     *
+     * @param context
+     * @return
+     */
+    public int getVersionCode(Context context) {
+        PackageManager packageManager = context.getPackageManager();
+        PackageInfo packageInfo;
+        int versionCode = 0;
+        try {
+            packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            versionCode = packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionCode;
     }
 
 }

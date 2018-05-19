@@ -6,15 +6,14 @@ import java.io.Serializable;
  * 作者：王东一 on 2016/6/4 08:29
  **/
 public class PieChartItem implements Serializable {
-    private int color;
+    private String color;
     private int percentage;
     private int starAngle;
-
-    public int getColor() {
+    public String getColor() {
         return color;
     }
 
-    public void setColor(int color) {
+    public void setColor(String color) {
         this.color = color;
     }
 

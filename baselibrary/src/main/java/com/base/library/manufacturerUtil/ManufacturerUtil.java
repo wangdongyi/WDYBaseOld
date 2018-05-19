@@ -14,6 +14,7 @@ import static com.base.library.manufacturerUtil.Manufacturer.other;
 public class ManufacturerUtil {
     private static final String MANUFACTURER_HUAWEI = "HUAWEI";
     private static final String MANUFACTURER_XIAOMI = "XIAOMI";
+    private static final String MANUFACTURER_XIAOMI_NEW = "Xiaomi";
     private static final String MANUFACTURER_OPPO = "OPPO";
     private static final String MANUFACTURER_VIVO = "vivo";
     private static final String MANUFACTURER_MEIZU = "meizu";
@@ -33,6 +34,7 @@ public class ManufacturerUtil {
                     Rmanufacturer = Manufacturer.vivo;
                     break;
                 case MANUFACTURER_XIAOMI:
+                case MANUFACTURER_XIAOMI_NEW:
                     Rmanufacturer = Manufacturer.XIAOMI;
                     break;
                 case MANUFACTURER_MEIZU:

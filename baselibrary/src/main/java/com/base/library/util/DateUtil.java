@@ -18,9 +18,8 @@ import java.util.TimeZone;
 public class DateUtil {
     /**
      * 调用此方法输入所要转换的时间戳输入例如（1402733340）输出（"2014年06月14日16时09分00秒"）
-     * <p>
-     * time
      *
+     *  time
      * @return
      */
     public static String getTime(String SimpleDateFormat) {
@@ -30,7 +29,6 @@ public class DateUtil {
         return sf.format(d);
 
     }
-
     public static String getTime() {
         SimpleDateFormat sf = null;
         Date d = new Date(System.currentTimeMillis());
@@ -38,7 +36,6 @@ public class DateUtil {
         return sf.format(d);
 
     }
-
     /**
      * 调用此方法输入所要转换的时间戳输入例如（1402733340）输出（"2014年06月14日16时09分00秒"）
      *
@@ -62,39 +59,35 @@ public class DateUtil {
         sf = new SimpleDateFormat("yyyy-MM-dd");
         return sf.format(d);
     }
-
     /*时间戳转换成字符窜*/
-    public static String getDateToString(long time, String SimpleDateFormat) {
+    public static String getDateToString(long time,String SimpleDateFormat) {
         SimpleDateFormat sf = null;
         Date d = new Date(time);
         sf = new SimpleDateFormat(SimpleDateFormat);
         return sf.format(d);
     }
-
     /*将字符串转为时间戳*/
     public static long getStringToDate(String time) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+        SimpleDateFormat   sdf = new SimpleDateFormat("yyyy年MM月dd日");
         Date date = new Date();
-        try {
+        try{
             date = sdf.parse(time);
-        } catch (ParseException e) {
+        } catch(ParseException e) {
             e.printStackTrace();
         }
         return date.getTime();
     }
-
     /*将字符串转为时间戳*/
-    public static long getStringToDate(String time, String format) {
+    public static long getStringToDate(String time ,String format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         Date date = new Date();
-        try {
+        try{
             date = sdf.parse(time);
-        } catch (ParseException e) {
+        } catch(ParseException e) {
             e.printStackTrace();
         }
         return date.getTime();
     }
-
     /**
      * 判断是否是闰年
      */
@@ -131,7 +124,45 @@ public class DateUtil {
         }
         return dayNum;
     }
+    /**
+     * 根据当前日期获得是星期几
+     *
+     * @return
+     */
+    public static int getWeekNum(String time) {
+        int Week = 0;
 
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        try {
+            c.setTime(format.parse(time));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+            Week = 6;
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+            Week = 0;
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) {
+            Week = 1;
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY) {
+            Week = 2;
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY) {
+            Week = 3;
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
+            Week = 4;
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+            Week = 5;
+        }
+        return Week;
+    }
     public static Date parse(String strDate, String pattern) {
 
         if (TextUtils.isEmpty(strDate)) {
@@ -199,46 +230,6 @@ public class DateUtil {
         }
         if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
             Week += "六";
-        }
-        return Week;
-    }
-
-    /**
-     * 根据当前日期获得是星期几
-     *
-     * @return
-     */
-    public static int getWeekNum(String time) {
-        int Week = 0;
-
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar c = Calendar.getInstance();
-        try {
-            c.setTime(format.parse(time));
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-            Week = 6;
-        }
-        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
-            Week = 0;
-        }
-        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) {
-            Week = 1;
-        }
-        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY) {
-            Week = 2;
-        }
-        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY) {
-            Week = 3;
-        }
-        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
-            Week = 4;
-        }
-        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-            Week = 5;
         }
         return Week;
     }
@@ -355,7 +346,6 @@ public class DateUtil {
         }
         return Week;
     }
-
     public static String minute(int second) {
         String time = "00:00";
         time = (second / 60 < 10 ? "0" + String.valueOf(second / 60) : String.valueOf(second / 60))

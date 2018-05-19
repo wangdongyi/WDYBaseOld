@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ public class SideBar extends View {
     private ArrayList<String> letterList = new ArrayList<>();
     private int textSize;//字母字体大小
     private int textColor;//字母颜色
+    private int textHeight;//字母高度
 
     public ArrayList<String> getLetterList() {
         return letterList;
@@ -38,6 +40,7 @@ public class SideBar extends View {
     public void setLetterList(ArrayList<String> letterList) {
         this.letterList.clear();
         this.letterList.addAll(letterList);
+        invalidate();
     }
 
     private int choose = -1;// 选中
@@ -108,7 +111,7 @@ public class SideBar extends View {
         // 获取焦点改变背景颜色.
         int height = getHeight();// 获取对应高度
         int width = getWidth(); // 获取对应宽度
-        int singleHeight = height / letterList.size();// 获取每一个字母的高度
+        textHeight = CodeUtil.dip2px(getContext(), 20);// 获取每一个字母的高度
 
         for (int i = 0; i < letterList.size(); i++) {
             paint.setColor(textColor);
@@ -123,7 +126,7 @@ public class SideBar extends View {
             }
             // x坐标等于中间-字符串宽度的一半.
             float xPos = width / 2 - paint.measureText(letterList.get(i)) / 2;
-            float yPos = singleHeight * i + singleHeight;
+            float yPos = textHeight * i + textHeight;
             canvas.drawText(letterList.get(i), xPos, yPos, paint);
             paint.reset();// 重置画笔
         }
@@ -136,8 +139,7 @@ public class SideBar extends View {
         final float y = event.getY();// 点击y坐标
         final int oldChoose = choose;
         final OnTouchingLetterChangedListener listener = onTouchingLetterChangedListener;
-        final int c = (int) (y / getHeight() * letterList.size());// 点击y坐标所占总高度的比例*b数组的长度就等于点击b中的个数.
-
+        final int c = (int) (y / textHeight);// 点击y坐标所占总高度的比例*b数组的长度就等于点击b中的个数.
         switch (action) {
             case MotionEvent.ACTION_UP:
                 choose = -1;//
@@ -169,8 +171,8 @@ public class SideBar extends View {
 
     /**
      * 向外公开的方法
-     *
-     *  onTouchingLetterChangedListener
+     * <p>
+     * onTouchingLetterChangedListener
      */
     public void setOnTouchingLetterChangedListener(OnTouchingLetterChangedListener onTouchingLetterChangedListener) {
         this.onTouchingLetterChangedListener = onTouchingLetterChangedListener;

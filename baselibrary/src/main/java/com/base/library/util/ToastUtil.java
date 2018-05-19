@@ -1,6 +1,8 @@
 package com.base.library.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -9,10 +11,16 @@ import android.widget.Toast;
  * Created by wangdongyi on 2017/2/10.
  * 弹出吐司框
  */
-
+@SuppressLint("ShowToast")
 public class ToastUtil {
     private static Toast tst = null;
     private Context context;
+    private static Handler mHandler = new Handler();
+    private static Runnable r = new Runnable() {
+        public void run() {
+            tst.cancel();
+        }
+    };
 
     public ToastUtil(Context context) {
         this.context = context;
@@ -86,13 +94,14 @@ public class ToastUtil {
         if (context == null || TextUtils.isEmpty(msg)) {
             return;
         }
-
-        if (tst != null) {
-            tst.cancel();
-            tst = null;
+        mHandler.removeCallbacks(r);
+        if (tst != null)
+            tst.setText(msg);
+        else {
+            tst = Toast.makeText(context, msg, length);
+            tst.setGravity(Gravity.CENTER, 0, 0);
         }
-        tst = Toast.makeText(context, msg, length);
-        tst.setGravity(Gravity.CENTER, 0, 0);
+        mHandler.postDelayed(r, 500);
         tst.show();
     }
 
@@ -103,17 +112,19 @@ public class ToastUtil {
      * param msg
      * param length
      */
+
     public void showMiddleToast(String msg) {
         if (context == null || TextUtils.isEmpty(msg)) {
             return;
         }
-
-        if (tst != null) {
-            tst.cancel();
-            tst = null;
+        mHandler.removeCallbacks(r);
+        if (tst != null)
+            tst.setText(msg);
+        else {
+            tst = Toast.makeText(context, msg, Toast.LENGTH_LONG);
+            tst.setGravity(Gravity.CENTER, 0, 0);
         }
-        tst = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
-        tst.setGravity(Gravity.CENTER, 0, 0);
+        mHandler.postDelayed(r, 1000);
         tst.show();
     }
 }

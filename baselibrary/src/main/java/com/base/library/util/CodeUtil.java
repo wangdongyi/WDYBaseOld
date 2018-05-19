@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -24,6 +25,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -42,12 +44,17 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -55,7 +62,9 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
@@ -117,6 +126,22 @@ public class CodeUtil {
             back = true;
         }
         return back;
+    }
+
+    /**
+     * double转String,保留小数点后两位
+     *
+     * @param num
+     * @return
+     */
+    public static String doubleToString(double num) {
+        //使用0.00不足位补0，#.##仅保留有效位
+        return new DecimalFormat("0.00").format(num);
+    }
+
+    public static String doubleToString(double num, String format) {
+        //使用0.00不足位补0，#.##仅保留有效位
+        return new DecimalFormat(format).format(num);
     }
 
     //获取屏幕的宽度
@@ -243,7 +268,9 @@ public class CodeUtil {
             return hasNavigationBar;
         }
     }
-
+    public static String makeUidToBase64(String uid){
+        return new String(Base64.encode(uid.getBytes(), Base64.DEFAULT));
+    }
     /**
      * 是否为竖屏
      *
@@ -331,6 +358,18 @@ public class CodeUtil {
         }
         // 最后通知图库更新
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + path)));
+    }
+
+    public static <T> ArrayList<T> deepCopy(ArrayList<T> src) throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(byteOut);
+        out.writeObject(src);
+
+        ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
+        ObjectInputStream in = new ObjectInputStream(byteIn);
+        @SuppressWarnings("unchecked")
+        ArrayList<T> dest = (ArrayList<T>) in.readObject();
+        return dest;
     }
 
     /**
@@ -641,7 +680,18 @@ public class CodeUtil {
         }
         return true;
     }
+    /**
+     * 判断当前应用是否是debug状态
+     */
 
+    public static boolean isApkInDebug(Context context) {
+        try {
+            ApplicationInfo info = context.getApplicationInfo();
+            return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
     /**
      * 检测sdcard是否可用
      *

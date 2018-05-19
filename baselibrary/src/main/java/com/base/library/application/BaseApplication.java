@@ -25,6 +25,7 @@ import com.base.library.util.CodeUtil;
 import com.base.library.util.LogUtil;
 import com.base.library.util.SharedPreferencesUtil;
 import com.base.library.util.ToastUtil;
+import com.bolex.autoEx.AutoEx;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -189,6 +190,7 @@ public class BaseApplication extends MultiDexApplication {
         instance = this;
         CCPAppManager.setContext(instance);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+        AutoEx.apply(this);
         initImageLoader();
         setOptionsHeadPortrait(this);
         setOptionsRectangular();

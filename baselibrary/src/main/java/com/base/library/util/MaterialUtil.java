@@ -56,4 +56,9 @@ public class MaterialUtil {
                 .rippleRoundedCorners(CodeUtil.dip2px(view.getContext(),100))
                 .create();
     }
+    public static void MaterialDelay(View view) {
+        MaterialRippleLayout.on(view)
+                .rippleDelayClick(false)
+                .create();
+    }
 }

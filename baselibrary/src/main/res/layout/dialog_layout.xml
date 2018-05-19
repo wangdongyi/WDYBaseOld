@@ -24,6 +24,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:background="@color/line" />
 
         <LinearLayout
@@ -42,7 +44,10 @@
                 android:gravity="center" />
         </LinearLayout>
 
-        <View style="@style/LineHorizontal" />
+        <View
+            style="@style/LineHorizontal"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,7 +64,9 @@
                 android:gravity="center"
                 android:text="取消" />
 
-            <View style="@style/LineVertical" />
+            <View
+                style="@style/LineVertical"
+                android:layout_marginBottom="5dp" />
 
             <TextView
                 android:id="@+id/textView_right"
